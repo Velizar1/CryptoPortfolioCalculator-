@@ -1,0 +1,10 @@
+﻿namespace CryptoPortfolio.Common.Enums
+{
+    public enum ErrorCodes
+    {
+        MissingMemoryCache = 1,
+        CouldNotCreateReader = 2,
+        LineNotInTheCorrectFormat = 3,
+        MissingCoinInMemoryCache = 4,
+    }
+}

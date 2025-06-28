@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoPortfolio.Common", "CryptoPortfolio.Common\CryptoPortfolio.Common.csproj", "{9C6ECB03-9E8E-4E40-95FF-0C2E5503F17E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoPortfolio.Infrastructure", "CryptoPortfolio.Infrastructure\CryptoPortfolio.Infrastructure.csproj", "{EDFDDD0A-EC17-486B-9EE2-461A0CD77FD6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoPorfolio", "CryptoPortfolio\CryptoPorfolio.csproj", "{666E2869-AD89-4965-93F8-2653FA71D78B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9C6ECB03-9E8E-4E40-95FF-0C2E5503F17E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C6ECB03-9E8E-4E40-95FF-0C2E5503F17E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C6ECB03-9E8E-4E40-95FF-0C2E5503F17E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C6ECB03-9E8E-4E40-95FF-0C2E5503F17E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDFDDD0A-EC17-486B-9EE2-461A0CD77FD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDFDDD0A-EC17-486B-9EE2-461A0CD77FD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDFDDD0A-EC17-486B-9EE2-461A0CD77FD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDFDDD0A-EC17-486B-9EE2-461A0CD77FD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{666E2869-AD89-4965-93F8-2653FA71D78B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{666E2869-AD89-4965-93F8-2653FA71D78B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{666E2869-AD89-4965-93F8-2653FA71D78B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{666E2869-AD89-4965-93F8-2653FA71D78B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
