@@ -2,14 +2,6 @@
 
 namespace CryptoPortfolio.Infrastructure.Models
 {
-
-    public record CoinLoreTickersModel
-    {
-        [JsonProperty("data")]
-        public List<CoinLoreTicker>? Data { get; init; }
-    }
-
-
     public record CoinLoreTicker
     {
         [JsonProperty("id")]

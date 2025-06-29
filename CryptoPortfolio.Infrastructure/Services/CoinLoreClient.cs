@@ -2,6 +2,7 @@
 using CryptoPortfolio.Common.Models;
 using CryptoPortfolio.Infrastructure.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Globalization;
 
 namespace CryptoPorfolio.Services
@@ -48,15 +49,22 @@ namespace CryptoPorfolio.Services
             response.EnsureSuccessStatusCode();
 
             var resultStr = await response.Content.ReadAsStringAsync();
-            var data = JsonConvert.DeserializeObject<CoinLoreTickersModel>(resultStr)!;
+            var coins = new List<CoinLoreTicker>();
 
-            var isEmptyResult = data == null ||
-               data.Data == null ||
-               data.Data.Count() == 0;
+            var token = JToken.Parse(resultStr);
 
-            return isEmptyResult ?
-                     null :
-                     data!.Data!
+            List<CoinLoreTicker>? data = token switch
+            {
+                JArray arr => arr.ToObject<List<CoinLoreTicker>>(),
+                JObject obj when obj["data"] is JArray tickersArr
+                                              => tickersArr.ToObject<List<CoinLoreTicker>>(),
+                _ => null
+            };
+
+            if (data == null || data.Count() == 0)
+                return null;
+
+            return  data!
                      .GroupBy(x => x.Symbol)
                      .ToDictionary(x => x.Key, x =>
                      {
@@ -65,6 +73,7 @@ namespace CryptoPorfolio.Services
                                             NumberStyles.Float,
                                             CultureInfo.InvariantCulture,
                                             out var price);
+
                          return new CacheCoinModel
                          {
                              Id = first.Id,

@@ -1,4 +1,4 @@
-﻿namespace CryptoPorfolio.Models
+﻿namespace CryptoPortfolio.Common.Models
 {
     public record class PortfolioCoinModel
     {

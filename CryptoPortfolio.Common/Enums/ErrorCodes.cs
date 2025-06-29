@@ -6,5 +6,7 @@
         CouldNotCreateReader = 2,
         LineNotInTheCorrectFormat = 3,
         MissingCoinInMemoryCache = 4,
+        MissingFileData = 5,
+        NoCoinDataFound = 6
     }
 }
