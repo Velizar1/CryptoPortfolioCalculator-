@@ -1,6 +1,6 @@
 import { useState, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Config } from '../configHelper';
+import { Config } from '../helpers/configHelper';
 import './UploadPage.css';
 
 export default function UploadPage() {

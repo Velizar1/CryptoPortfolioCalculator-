@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import UploadPage     from './pages/UploadPage';
-import PortfolioPage  from './pages/PortfolioPage';
+import UploadPage from './pages/UploadPage';
+import PortfolioPage from './pages/PortfolioPage';
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
