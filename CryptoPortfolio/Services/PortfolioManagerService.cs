@@ -66,6 +66,8 @@ namespace CryptoPorfolio.Services
 
                 result.Add(new PortfolioCoinModel
                 {
+                    CoinCount = cachedFileCoin!.Value.CoinCount,
+                    BoughtValue = cachedFileCoin.Value.Price,
                     CoinCode = key,
                     CurrentValue = cachedFileCoin!.Value.CoinCount * updatedPrice,
                     PercentageChange = (updatedPrice - cachedFileCoin.Value.Price) / cachedFileCoin.Value.Price * 100,
@@ -96,10 +98,10 @@ namespace CryptoPorfolio.Services
 
                 var values = line.Split("|");
 
-                decimal coinCount;
-                decimal coinValue;
-                if (decimal.TryParse(values[0], out coinCount) == false ||
-                    decimal.TryParse(values[2], out coinValue) == false)
+                decimal coinPortCount;
+                decimal coinPortValue;
+                if (decimal.TryParse(values[0], out coinPortCount) == false ||
+                    decimal.TryParse(values[2], out coinPortValue) == false)
                     return ResultModel<List<PortfolioCoinModel>?>.Failed(ErrorCodes.LineNotInTheCorrectFormat);
 
                 var coinCode = values[1];
@@ -112,15 +114,17 @@ namespace CryptoPorfolio.Services
 
                 result.Add(new PortfolioCoinModel
                 {
+                    CoinCount = coinPortCount,
+                    BoughtValue = coinPortValue,
                     CoinCode = coinCode,
-                    CurrentValue = coinCount * cachedCoin.Value.Price,
-                    PercentageChange = (cachedCoin.Value.Price - coinValue) / coinValue * 100
+                    CurrentValue = coinPortCount * cachedCoin.Value.Price,
+                    PercentageChange = (cachedCoin.Value.Price - coinPortValue) / coinPortValue * 100
                 });
 
                 fileInfo[cachedCoin.Value.Id] = new CacheFileLineModel
                 {
-                    Price = coinValue,
-                    CoinCount = coinCount,
+                    Price = coinPortValue,
+                    CoinCount = coinPortCount,
                 };
             }
 

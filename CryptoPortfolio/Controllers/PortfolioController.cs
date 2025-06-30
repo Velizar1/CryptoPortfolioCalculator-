@@ -20,7 +20,7 @@ namespace CryptoPorfolio.Controllers
         [ProducesResponseType(typeof(ResultModel<List<PortfolioCoinModel>?>), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<List<PortfolioCoinModel>?>> UploadCryptoPortfolio(IFormFile file, CancellationToken cancellationToken)
         {
-            if (file.Length > 10 * 1024 * 1024)
+            if (file.Length > 5 * 1024 * 1024)
                 return BadRequest("File too large.");
 
             if (!Path.GetExtension(file.FileName).Equals(FileConstants.SupportedFormat, StringComparison.OrdinalIgnoreCase))
@@ -31,7 +31,7 @@ namespace CryptoPorfolio.Controllers
         }
 
         [HttpGet]
-        [ServiceFilter(typeof(EndpointHitFilter))] // 60-sec window
+        [ServiceFilter(typeof(EndpointHitTimeFilter))] // 60-sec hit interval allowed
         [ProducesResponseType(typeof(ResultModel<List<PortfolioCoinModel>?>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResultModel<List<PortfolioCoinModel>?>), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<List<PortfolioCoinModel>?>> RefreshInformation(CancellationToken cancellationToken)

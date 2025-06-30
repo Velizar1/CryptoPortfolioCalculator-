@@ -50,13 +50,12 @@ namespace CryptoPorfolio
                 });
 
             builder.Services.AddScoped<IPortfolioManagerService, PortfolioManagerService>();
-            builder.Services.AddScoped<EndpointHitFilter>();
+            builder.Services.AddScoped<EndpointHitTimeFilter>();
             builder.Services.AddHostedService<CoinLoreCacheSeeder>();
-            builder.Services.AddCors(o => o.AddDefaultPolicy(p =>
-                                                                p.WithOrigins("https://localhost:5001")
-                                                                .AllowAnyHeader()
-                                                                .AllowAnyMethod())
-                                    );
+            builder.Services.AddCors(o =>       o.AddDefaultPolicy(p =>
+                                                     p.WithOrigins("https://localhost:5001", "http://localhost:3000")
+                                                     .AllowAnyHeader()
+                                                     .AllowAnyMethod()));
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -88,9 +87,10 @@ namespace CryptoPorfolio
             }
 
             app.UseHttpsRedirection();
+            app.UseRouting();
+            app.UseCors();
 
             app.MapControllers();
-            app.UseCors();
             app.Run();
         }
     }

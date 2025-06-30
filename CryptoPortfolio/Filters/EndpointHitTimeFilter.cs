@@ -7,12 +7,12 @@ using Microsoft.Extensions.Options;
 
 namespace CryptoPorfolio.Filters
 {
-    public sealed class EndpointHitFilter : IAsyncActionFilter
+    public sealed class EndpointHitTimeFilter : IAsyncActionFilter
     {
         private readonly IMemoryCache _cache;
         private readonly TimeSpan _interval;
 
-        public EndpointHitFilter(IMemoryCache cache, IOptions<EndpoinHitOptions> opts)
+        public EndpointHitTimeFilter(IMemoryCache cache, IOptions<EndpoinHitOptions> opts)
         {
             _cache = cache;
             _interval = TimeSpan.FromSeconds(opts.Value.Seconds);
