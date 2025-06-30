@@ -1,0 +1,43 @@
+.page {
+  max-width: 480px;
+  margin: 4rem auto;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgb(0 0 0 / 0.1);
+  font-family: system-ui, sans-serif;
+}
+
+h1 {
+  margin: 0 0 1.5rem 0;
+  text-align: center;
+}
+
+input[type='file'] {
+  width: 95%;
+  padding: 1rem;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button {
+  margin-top: 1.5rem;
+  padding: 0.8rem 1.2rem;
+  width: 100%;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  background: #0070f3;
+  transition: background 0.2s;
+}
+
+button:disabled {
+  background: #94c0ff;
+  cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+  background: #005ad6;
+}

@@ -1,0 +1,15 @@
+// .vscode/launch.json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Attach to CRA",
+      "type": "pwa-chrome",
+      "request": "launch",             // or "attach" if Chrome is already open
+      "url": "http://localhost:3000",  // dev-server URL
+      "webRoot": "${workspaceFolder}/src",
+      "breakOnLoad": true,             // hit first line automatically
+      "sourceMaps": true
+    }
+  ]
+}
