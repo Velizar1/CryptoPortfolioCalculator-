@@ -64,7 +64,7 @@ namespace CryptoPorfolio.Services
             if (data == null || data.Count() == 0)
                 return null;
 
-            return  data!
+            return  data
                      .GroupBy(x => x.Symbol)
                      .ToDictionary(x => x.Key, x =>
                      {

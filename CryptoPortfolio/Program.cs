@@ -40,7 +40,7 @@ namespace CryptoPorfolio
                 .Configure<CoinLoreOptionsModel>(builder.Configuration.GetSection("ExternalApis:CoinLore"));
 
             builder.Services
-               .Configure<EndpoinHitOptions>( builder.Configuration.GetSection("EndpoinHit"));
+               .Configure<EndpoinHitOptions>(builder.Configuration.GetSection("EndpoinHit"));
 
             builder.Services.AddHttpClient<CoinLoreClient>()
                 .ConfigureHttpClient((sp, http) =>
@@ -52,7 +52,7 @@ namespace CryptoPorfolio
             builder.Services.AddScoped<IPortfolioManagerService, PortfolioManagerService>();
             builder.Services.AddScoped<EndpointHitTimeFilter>();
             builder.Services.AddHostedService<CoinLoreCacheSeeder>();
-            builder.Services.AddCors(o =>       o.AddDefaultPolicy(p =>
+            builder.Services.AddCors(o => o.AddDefaultPolicy(p =>
                                                      p.WithOrigins("https://localhost:5001", "http://localhost:3000")
                                                      .AllowAnyHeader()
                                                      .AllowAnyMethod()));

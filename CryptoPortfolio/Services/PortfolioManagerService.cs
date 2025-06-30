@@ -25,20 +25,28 @@ namespace CryptoPorfolio.Services
 
         public async Task<ResultModel<List<PortfolioCoinModel>?>> ComputeCurrentPortfolio(IFormFile file, CancellationToken cancellationToken)
         {
-            return await ObservableHelper.TrackOperation(_logger, $"{nameof(PortfolioManagerService)}-{nameof(ComputeCurrentPortfolio)}", () => ComputeResult(file, cancellationToken));
+            return await ObservableHelper.TrackOperation(
+                _logger,
+                $"{nameof(PortfolioManagerService)}-{nameof(ComputeCurrentPortfolio)}",
+                () => ComputeResult(file, cancellationToken));
         }
 
         public async Task<ResultModel<List<PortfolioCoinModel>?>> UpdatePortfolio(CancellationToken cancellationToken)
         {
-            return await ObservableHelper.TrackOperation(_logger, $"{nameof(PortfolioManagerService)}-{nameof(UpdatePortfolio)}", () => SyncPortfolioData(cancellationToken));
+            return await ObservableHelper.TrackOperation(
+                _logger, 
+                $"{nameof(PortfolioManagerService)}-{nameof(UpdatePortfolio)}",
+                () => SyncPortfolioData(cancellationToken));
         }
 
+        //TODO add session id to chached file key
         private async Task<ResultModel<List<PortfolioCoinModel>?>> SyncPortfolioData(CancellationToken cancellationToken)
         {
             if (_memoryCache.TryGetValue<Dictionary<string, CacheFileLineModel?>>(CacheConstants.FileCoinsKey, out var cachedFile) == false ||
                 cachedFile == null)
                 return ResultModel<List<PortfolioCoinModel>?>.Failed(ErrorCodes.MissingFileData);
 
+            //can be removed
             var ids = cachedFile.Keys.Select(x =>
             {
                 int.TryParse(x, out int id);
@@ -69,6 +77,7 @@ namespace CryptoPorfolio.Services
                     CoinCount = cachedFileCoin!.Value.CoinCount,
                     BoughtValue = cachedFileCoin.Value.Price,
                     CoinCode = key,
+                    CurrentCoinValue = updatedPrice,
                     CurrentValue = cachedFileCoin!.Value.CoinCount * updatedPrice,
                     PercentageChange = (updatedPrice - cachedFileCoin.Value.Price) / cachedFileCoin.Value.Price * 100,
                 });
@@ -116,6 +125,7 @@ namespace CryptoPorfolio.Services
                 {
                     CoinCount = coinPortCount,
                     BoughtValue = coinPortValue,
+                    CurrentCoinValue = cachedCoin.Value.Price,
                     CoinCode = coinCode,
                     CurrentValue = coinPortCount * cachedCoin.Value.Price,
                     PercentageChange = (cachedCoin.Value.Price - coinPortValue) / coinPortValue * 100

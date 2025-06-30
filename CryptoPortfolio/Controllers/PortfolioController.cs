@@ -31,7 +31,7 @@ namespace CryptoPorfolio.Controllers
         }
 
         [HttpGet]
-        [ServiceFilter(typeof(EndpointHitTimeFilter))] // 60-sec hit interval allowed
+        [ServiceFilter(typeof(EndpointHitTimeFilter))] // 55-sec hit interval allowed
         [ProducesResponseType(typeof(ResultModel<List<PortfolioCoinModel>?>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResultModel<List<PortfolioCoinModel>?>), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<List<PortfolioCoinModel>?>> RefreshInformation(CancellationToken cancellationToken)
