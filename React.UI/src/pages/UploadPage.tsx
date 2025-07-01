@@ -16,7 +16,7 @@ export default function UploadPage() {
     fd.append('file', file);
     setBusy(true);
 
-    const res = await fetch(Config.api.upload, { method: 'PUT', body: fd });
+    const res = await fetch(Config.api.upload, { method: 'PUT', body: fd, credentials: "include"});
     setBusy(false);
 
     if (!res.ok) {
@@ -35,7 +35,7 @@ export default function UploadPage() {
       <form onSubmit={handleSubmit} className="mt-4 flex flex-col gap-4">
         <input
           type="file"
-          accept=".csv,.json"      // adjust to your spec
+          accept=".txt"
           onChange={e => setFile(e.target.files?.[0])}
         />
 

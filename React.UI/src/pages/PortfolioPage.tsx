@@ -56,6 +56,7 @@ export default function PortfolioPage() {
     async function updateAiInfo(json: CoinRow[] | undefined) {
       if (!json) return;
 
+      let rowsWithInfo: CoinRow[]
       const aiInput: ResponseInput = [
         {
           role: "developer",
@@ -65,21 +66,29 @@ export default function PortfolioPage() {
       ];
 
       try {
-        const aiRes = await client.responses.create({
-          model: "gpt-4.1",
-          input: aiInput,
-          stream: false,
-        });
+        if (!client.apiKey || client.apiKey === "") {
+          rowsWithInfo = json.map((row, i) => ({
+            ...row,
+            coinInformation: "Not available",
+          }));
 
-        const summaries = aiRes.output_text
-          .trim()
-          .replace(/(?:\r?\n){2,}/g, "\n")
-          .split("\n");
+        } else {
+          const aiRes = await client.responses.create({
+            model: "gpt-4.1",
+            input: aiInput,
+            stream: false,
+          });
 
-        const rowsWithInfo: CoinRow[] = json.map((row, i) => ({
-          ...row,
-          coinInformation: summaries[i] ?? "",
-        }));
+          const summaries = aiRes.output_text
+            .trim()
+            .replace(/(?:\r?\n){2,}/g, "\n")
+            .split("\n");
+
+          rowsWithInfo = json.map((row, i) => ({
+            ...row,
+            coinInformation: summaries[i] ?? "",
+          }));
+        }
 
         setRows(rowsWithInfo);
         setErr(undefined);
@@ -90,7 +99,7 @@ export default function PortfolioPage() {
 
     async function refreshInformation() {
       try {
-        const res = await fetch(Config.api.refresh, { method: "GET" });
+        const res = await fetch(Config.api.refresh, { method: "GET", credentials: "include" });
         if (!res.ok) throw new Error(await res.text());
         const json: CoinRow[] = await res.json();
 
