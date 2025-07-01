@@ -10,7 +10,7 @@ Log files with operations steps and errors will be generated in ./CryptoPortfoli
 ## Client React App
 You can find the react application settled in ./React.UI folder. Open this folder with VS code and add .env file with the following content :  
 
-REACT_APP_API_BASE = https://localhost:7225/Portfolio   -- base address, keep in mind that the port must the same as the one in server config sile  
+REACT_APP_API_BASE = https://localhost:7225/Portfolio   -- base address, keep in mind that the port must the same as the one in server config file  
 REACT_APP_API_UPLOAD = /UploadCryptoPortfolio           -- upload endpoint  
 REACT_APP_API_REFRESH = /RefreshInformation             -- refresh endpoint  
 REACT_APP_POLL_INTERVAL = 60000                         -- refres polling intereval in ms  
