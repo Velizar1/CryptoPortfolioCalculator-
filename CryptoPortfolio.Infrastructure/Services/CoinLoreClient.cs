@@ -30,20 +30,20 @@ namespace CryptoPorfolio.Services
             return isEmptyResult ? 0 : data!.First().CoinsCount;
         }
 
-        public async Task<Dictionary<string, CacheCoinModel>?> GetTickersPrices(int skip, int take, CancellationToken cancelationToken)
+        public async Task<Dictionary<string, CacheCoinAPIModel>?> GetTickersPrices(int skip, int take, CancellationToken cancelationToken)
         {
             var uri = String.Format(ExternalCryptocurrencyAPIConstants.TickersBySize, skip, take);
             return await GetResponse(uri, cancelationToken);
         }
 
-        public async Task<Dictionary<string, CacheCoinModel>?> GetTickersPricesByIds(List<int> ids, CancellationToken cancelationToken)
+        public async Task<Dictionary<string, CacheCoinAPIModel>?> GetTickersPricesByIds(List<string> ids, CancellationToken cancelationToken)
         {
             var strIds = string.Join(",", ids);
             var uri = String.Format(ExternalCryptocurrencyAPIConstants.TickersByIds, strIds);
             return await GetResponse(uri, cancelationToken);
         }
 
-        private async Task<Dictionary<string, CacheCoinModel>?> GetResponse(string uri, CancellationToken cancelationToken)
+        private async Task<Dictionary<string, CacheCoinAPIModel>?> GetResponse(string uri, CancellationToken cancelationToken)
         {
             using var response = await _client.GetAsync(uri, cancelationToken);
             response.EnsureSuccessStatusCode();
@@ -74,7 +74,7 @@ namespace CryptoPorfolio.Services
                                             CultureInfo.InvariantCulture,
                                             out var price);
 
-                         return new CacheCoinModel
+                         return new CacheCoinAPIModel
                          {
                              Id = first.Id,
                              Price = price

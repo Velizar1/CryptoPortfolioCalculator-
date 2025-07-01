@@ -7,6 +7,7 @@
         LineNotInTheCorrectFormat = 3,
         MissingCoinInMemoryCache = 4,
         MissingFileData = 5,
-        NoCoinDataFound = 6
+        NoCoinDataFound = 6,
+        RequestsNotAllowedInTimeInterval = 7
     }
 }

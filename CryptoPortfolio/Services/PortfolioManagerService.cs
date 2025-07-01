@@ -23,54 +23,43 @@ namespace CryptoPorfolio.Services
             _client = client;
         }
 
-        public async Task<ResultModel<List<PortfolioCoinModel>?>> ComputeCurrentPortfolio(IFormFile file, CancellationToken cancellationToken)
+        public async Task<ResultModel<List<PortfolioCoinModel>?>> ComputeCurrentPortfolio(string chacheFileKey, IFormFile file, CancellationToken cancellationToken)
         {
             return await ObservableHelper.TrackOperation(
                 _logger,
                 $"{nameof(PortfolioManagerService)}-{nameof(ComputeCurrentPortfolio)}",
-                () => ComputeResult(file, cancellationToken));
+                () => ComputeResult(chacheFileKey, file, cancellationToken));
         }
 
-        public async Task<ResultModel<List<PortfolioCoinModel>?>> UpdatePortfolio(CancellationToken cancellationToken)
+        public async Task<ResultModel<List<PortfolioCoinModel>?>> UpdatePortfolio(string chacheFileKey, CancellationToken cancellationToken)
         {
             return await ObservableHelper.TrackOperation(
                 _logger, 
                 $"{nameof(PortfolioManagerService)}-{nameof(UpdatePortfolio)}",
-                () => SyncPortfolioData(cancellationToken));
+                () => UpdatePortfolioData(chacheFileKey, cancellationToken));
         }
 
-        //TODO add session id to chached file key
-        private async Task<ResultModel<List<PortfolioCoinModel>?>> SyncPortfolioData(CancellationToken cancellationToken)
+        private async Task<ResultModel<List<PortfolioCoinModel>?>> UpdatePortfolioData(string chacheFileKey, CancellationToken cancellationToken)
         {
-            if (_memoryCache.TryGetValue<Dictionary<string, CacheFileLineModel?>>(CacheConstants.FileCoinsKey, out var cachedFile) == false ||
+            if (_memoryCache.TryGetValue<Dictionary<string, CacheFileLineModel?>>(chacheFileKey, out var cachedFile) == false ||
                 cachedFile == null)
                 return ResultModel<List<PortfolioCoinModel>?>.Failed(ErrorCodes.MissingFileData);
 
-            //can be removed
-            var ids = cachedFile.Keys.Select(x =>
-            {
-                int.TryParse(x, out int id);
-                return id;
-            });
+            var updatedCoinsResult = await _client.GetTickersPricesByIds(cachedFile.Keys.ToList(), cancellationToken);
 
-            if (ids.Any(x => x == 0))
-                return ResultModel<List<PortfolioCoinModel>?>.Failed(ErrorCodes.MissingFileData);
-
-            var updatedResult = await _client.GetTickersPricesByIds(ids.ToList(), cancellationToken);
-
-            if (updatedResult == null)
+            if (updatedCoinsResult == null)
                 return ResultModel<List<PortfolioCoinModel>?>.Failed(ErrorCodes.NoCoinDataFound);
 
             List<PortfolioCoinModel> result = new();
 
-            foreach (var key in updatedResult.Keys)
+            foreach (var key in updatedCoinsResult.Keys)
             {
-                var coinId = updatedResult[key].Id;
+                var coinId = updatedCoinsResult[key].Id;
                 var cachedFileCoin = cachedFile.GetValueOrDefault(coinId);
                 if (cachedFileCoin == null)
                     return ResultModel<List<PortfolioCoinModel>?>.Failed(ErrorCodes.NoCoinDataFound);
 
-                var updatedPrice = updatedResult[key].Price;
+                var updatedPrice = updatedCoinsResult[key].Price;
 
                 result.Add(new PortfolioCoinModel
                 {
@@ -86,12 +75,11 @@ namespace CryptoPorfolio.Services
             return ResultModel<List<PortfolioCoinModel>?>.Succeed(result);
         }
 
-        private async Task<ResultModel<List<PortfolioCoinModel>?>> ComputeResult(IFormFile file, CancellationToken cancellationToken)
+        private async Task<ResultModel<List<PortfolioCoinModel>?>> ComputeResult(string chacheFileKey, IFormFile file, CancellationToken cancellationToken)
         {
-            if (_memoryCache.TryGetValue<Dictionary<string, CacheCoinModel?>>(CacheConstants.CoinsKey, out var cache) == false)
+            if (_memoryCache.TryGetValue<Dictionary<string, CacheCoinAPIModel?>>(CacheConstants.CoinsKey, out var cache) == false)
                 return ResultModel<List<PortfolioCoinModel>?>.Failed(ErrorCodes.MissingMemoryCache);
 
-            _memoryCache.TryGetValue<Dictionary<string, CacheCoinModel?>?>(CacheConstants.DuplicatedCoinsKey, out var duplicatedCache);
             using var reader = new StreamReader(file.OpenReadStream());
             if (reader == null)
                 return ResultModel<List<PortfolioCoinModel>?>.Failed(ErrorCodes.CouldNotCreateReader);
@@ -117,8 +105,7 @@ namespace CryptoPorfolio.Services
 
                 var cachedCoin = cache!.GetValueOrDefault(coinCode, null);
 
-                if (cachedCoin == null &&
-                   (cachedCoin = duplicatedCache?.GetValueOrDefault(coinCode, null)) == null)
+                if (cachedCoin == null)
                     return ResultModel<List<PortfolioCoinModel>?>.Failed(ErrorCodes.MissingCoinInMemoryCache);
 
                 result.Add(new PortfolioCoinModel
@@ -138,7 +125,7 @@ namespace CryptoPorfolio.Services
                 };
             }
 
-            _memoryCache.Set(CacheConstants.FileCoinsKey, fileInfo);
+            _memoryCache.Set(chacheFileKey, fileInfo);
             return ResultModel<List<PortfolioCoinModel>?>.Succeed(result);
         }
     }

@@ -15,7 +15,6 @@ namespace CryptoPortfolio.Common.Models
         }
     }
 
-
     public class ResultModel<TData> : ResultModel
     {
         public TData? Data { get; set; }

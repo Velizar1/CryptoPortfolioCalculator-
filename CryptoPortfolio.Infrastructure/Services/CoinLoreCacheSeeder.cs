@@ -44,7 +44,7 @@ namespace CryptoPortfolio.Infrastructure.Services
             var totalPages = totalCoinsCount / coinsPerBatch;
             var lastPageCount = totalCoinsCount % coinsPerBatch;
 
-            List<Task<Dictionary<string, CacheCoinModel>?>> tasks = new();
+            List<Task<Dictionary<string, CacheCoinAPIModel>?>> tasks = new();
 
             for (var i = 0; i < totalPages; i++)
             {
@@ -58,21 +58,16 @@ namespace CryptoPortfolio.Infrastructure.Services
                                      .Where(d => d != null)
                                      .SelectMany(d => d!);
 
-            var coins = new Dictionary<string, CacheCoinModel?>();
-            var duplicatedCoins = new Dictionary<string, CacheCoinModel?>();
+            var coins = new Dictionary<string, CacheCoinAPIModel?>();
             foreach (var coin in results)
             {
                 if (coins.ContainsKey(coin.Key))
-                {
-                    duplicatedCoins[coin.Key] = coin.Value;
                     continue;
-                }
+
                 coins[coin.Key] = coin.Value;
             }
 
             _cache.Set(CacheConstants.CoinsKey, coins);
-            _cache.Set(CacheConstants.DuplicatedCoinsKey, duplicatedCoins);
         }
-
     }
 }

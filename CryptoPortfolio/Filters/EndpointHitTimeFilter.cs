@@ -1,4 +1,5 @@
 ﻿using CryptoPorfolio.Filters.Options;
+using CryptoPortfolio.Common.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -20,13 +21,17 @@ namespace CryptoPorfolio.Filters
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            var ip = context.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+            var sessionId = context.HttpContext.Session.Id;
             var path = context.HttpContext.Request.Path.ToString().ToLowerInvariant();
-            var key = $"{path}|{ip}";
+            var key = $"{path}|{sessionId}";
 
             if (_cache.TryGetValue(key, out _))
             {
-                context.Result = new StatusCodeResult(StatusCodes.Status429TooManyRequests);
+
+                context.Result = new ObjectResult(new { Error = $"{ErrorCodes.RequestsNotAllowedInTimeInterval}" })
+                {
+                    StatusCode = StatusCodes.Status429TooManyRequests
+                };
                 return;
             }
 

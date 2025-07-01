@@ -20,6 +20,7 @@ namespace CryptoPorfolio
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddMemoryCache();
+            builder.Services.AddDistributedMemoryCache();
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information().MinimumLevel.Information()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
@@ -55,8 +56,17 @@ namespace CryptoPorfolio
             builder.Services.AddCors(o => o.AddDefaultPolicy(p =>
                                                      p.WithOrigins("https://localhost:5001", "http://localhost:3000")
                                                      .AllowAnyHeader()
-                                                     .AllowAnyMethod()));
+                                                     .AllowAnyMethod()
+                                                     .AllowCredentials()));
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
 
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+                options.Cookie.SameSite = SameSiteMode.None;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+            });
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
@@ -86,9 +96,10 @@ namespace CryptoPorfolio
                 app.MapOpenApi();
             }
 
-            app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseHttpsRedirection();
             app.UseCors();
+            app.UseSession();
 
             app.MapControllers();
             app.Run();
