@@ -2,7 +2,9 @@
 Crypto portfolio calculation.  
 The project contains of a server and front-end side.
 
-In order to use the project, start the backend server.A swagger supported page with endpoin documentation should appear.    Retrieving calculated crypto coin profits base on uploaded portfolio file with format of each line -   number of coins(number)|coin(code)|initial buy price(number)  
+## Server side
+In order to use the project, start the backend server.  A swagger supported page with endpoin documentation should appear.    Retrieving calculated crypto coin profits base on uploaded portfolio file with format of each line :  
+number of coins(number)|coin(code)|initial buy price(number)  
 Log files with operations steps and errors will be generated in ./CryptoPortfolio/Logs    
 
 ## Client React App
