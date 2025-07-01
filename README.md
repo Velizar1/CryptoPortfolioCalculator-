@@ -1,20 +1,20 @@
 # CryptoPortfolioCalculator-
-Crypto portfolio calculation
+Crypto portfolio calculation.  
 The project contains of a server and front-end side.
 
-In order to use the project, start the backend server for retrieving calculated crypto coin profits base on uploaded portfolio file with format of each line - number of coins(number)|coin(code)|initial buy price(number)
-Log files with operations steps and errors will be generated in ./CryptoPortfolio/Logs
+In order to use the project, start the backend server.A swagger supported page with endpoin documentation should appear.    Retrieving calculated crypto coin profits base on uploaded portfolio file with format of each line -   number of coins(number)|coin(code)|initial buy price(number)  
+Log files with operations steps and errors will be generated in ./CryptoPortfolio/Logs    
 
 ## Client React App
-You can find the react application settled in ./React.UI folder. Open this folder with VS code and add .env file with the following content :
+You can find the react application settled in ./React.UI folder. Open this folder with VS code and add .env file with the following content :  
 
-REACT_APP_API_BASE = https://localhost:7225/Portfolio   -- base address, keep in mind that the port must the same as the one in server config sile
-REACT_APP_API_UPLOAD = /UploadCryptoPortfolio           -- upload endpoint
-REACT_APP_API_REFRESH = /RefreshInformation             -- refresh endpoint
-REACT_APP_POLL_INTERVAL = 60000                         -- refres polling intereval in ms
-REACT_APP_OPENAI_API_KEY = XXXX                         -- openai api key - https://platform.openai.com/api-keys
+REACT_APP_API_BASE = https://localhost:7225/Portfolio   -- base address, keep in mind that the port must the same as the one in server config sile  
+REACT_APP_API_UPLOAD = /UploadCryptoPortfolio           -- upload endpoint  
+REACT_APP_API_REFRESH = /RefreshInformation             -- refresh endpoint  
+REACT_APP_POLL_INTERVAL = 60000                         -- refres polling intereval in ms  
+REACT_APP_OPENAI_API_KEY = XXXX                         -- openai api key - https://platform.openai.com/api-keys  
 
-In the project directory, you can run:
+In the project directory, you can run:  
 
 ### `npm start`
 
