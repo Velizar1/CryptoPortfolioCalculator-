@@ -1,7 +1,8 @@
-import { useState, FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Config } from '../helpers/configHelper';
-import './UploadPage.css';
+import { useState, FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
+import { Config } from "../helpers/ConfigHelper";
+import { uploadFile } from "../services/PortfolioService";
+import "./UploadPage.css";
 
 export default function UploadPage() {
   const [file, setFile] = useState<File>();
@@ -12,20 +13,25 @@ export default function UploadPage() {
     e.preventDefault();
     if (!file) return;
 
-    const fd = new FormData();
-    fd.append('file', file);
-    setBusy(true);
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      setBusy(true);
 
-    const res = await fetch(Config.api.upload, { method: 'PUT', body: fd, credentials: "include"});
-    setBusy(false);
+      const res = await uploadFile(fd);
+      setBusy(false);
 
-    if (!res.ok) {
-      alert(await res.text());
-      return;
+      if (!res.ok) {
+        alert(await res.text());
+        return;
+      }
+
+      const payload = await res.json();
+      nav("/portfolio", { state: payload });
+    } catch (err) {
+      alert(err);
+      setBusy(false);
     }
-
-    const payload = await res.json();   
-    nav('/portfolio', { state: payload });
   }
 
   return (
@@ -36,11 +42,11 @@ export default function UploadPage() {
         <input
           type="file"
           accept=".txt"
-          onChange={e => setFile(e.target.files?.[0])}
+          onChange={(e) => setFile(e.target.files?.[0])}
         />
 
         <button type="submit" disabled={!file || busy}>
-          {busy ? 'Uploading…' : 'Upload & View'}
+          {busy ? "Uploading…" : "Upload & View"}
         </button>
       </form>
     </main>
