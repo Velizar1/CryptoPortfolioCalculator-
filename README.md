@@ -18,6 +18,10 @@ REACT_APP_OPENAI_API_KEY = XXXX                         -- openai api key - http
 
 In the project directory, you can run:  
 
+### `npm install`
+
+Download needed packages from the npm registry.
+
 ### `npm start`
 
 Runs the app in the development mode.\
