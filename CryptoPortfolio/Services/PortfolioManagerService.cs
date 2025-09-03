@@ -12,11 +12,11 @@ namespace CryptoPorfolio.Services
     {
         private readonly IMemoryCache _memoryCache;
         private readonly ILogger<PortfolioManagerService> _logger;
-        private readonly CoinLoreClient _client;
+        private readonly ICoinLoreClient _client;
 
         public PortfolioManagerService(IMemoryCache cache,
             ILogger<PortfolioManagerService> logger,
-            CoinLoreClient client)
+            ICoinLoreClient client)
         {
             _memoryCache = cache;
             _logger = logger;

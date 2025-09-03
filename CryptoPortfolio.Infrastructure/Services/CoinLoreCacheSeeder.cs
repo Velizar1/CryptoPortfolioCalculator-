@@ -11,12 +11,12 @@ namespace CryptoPortfolio.Infrastructure.Services
     public sealed class CoinLoreCacheSeeder : IHostedService
     {
         private short coinsPerBatch = 100;
-        private readonly CoinLoreClient _client;
+        private readonly ICoinLoreClient _client;
         private readonly IMemoryCache _cache;
         private readonly ILogger<CoinLoreCacheSeeder> _log;
 
         public CoinLoreCacheSeeder(
-            CoinLoreClient client,
+            ICoinLoreClient client,
             IMemoryCache cache,
             ILogger<CoinLoreCacheSeeder> log)
         {

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoPortfolio.Infrastruct
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoPorfolio", "CryptoPortfolio\CryptoPorfolio.csproj", "{666E2869-AD89-4965-93F8-2653FA71D78B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoPortfolio.Tests", "CryptoPortfolio.Tests\CryptoPortfolio.Tests.csproj", "{B59DF309-AFAF-4A69-AE4C-CA24E8860133}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{666E2869-AD89-4965-93F8-2653FA71D78B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{666E2869-AD89-4965-93F8-2653FA71D78B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{666E2869-AD89-4965-93F8-2653FA71D78B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B59DF309-AFAF-4A69-AE4C-CA24E8860133}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B59DF309-AFAF-4A69-AE4C-CA24E8860133}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B59DF309-AFAF-4A69-AE4C-CA24E8860133}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B59DF309-AFAF-4A69-AE4C-CA24E8860133}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -7,7 +7,7 @@ using System.Globalization;
 
 namespace CryptoPorfolio.Services
 {
-    public sealed class CoinLoreClient
+    public sealed class CoinLoreClient : ICoinLoreClient
     {
         private readonly HttpClient _client;
 
@@ -64,7 +64,7 @@ namespace CryptoPorfolio.Services
             if (data == null || data.Count() == 0)
                 return null;
 
-            return  data
+            return data
                      .GroupBy(x => x.Symbol)
                      .ToDictionary(x => x.Key, x =>
                      {

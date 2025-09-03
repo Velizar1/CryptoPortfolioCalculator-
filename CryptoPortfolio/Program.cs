@@ -43,7 +43,8 @@ namespace CryptoPorfolio
             builder.Services
                .Configure<EndpoinHitOptions>(builder.Configuration.GetSection("EndpoinHit"));
 
-            builder.Services.AddHttpClient<CoinLoreClient>()
+            builder.Services.AddSingleton<ICoinLoreClient, CoinLoreClient>();
+            builder.Services.AddHttpClient<ICoinLoreClient>()
                 .ConfigureHttpClient((sp, http) =>
                 {
                     var opt = sp.GetRequiredService<IOptions<CoinLoreOptionsModel>>().Value;
