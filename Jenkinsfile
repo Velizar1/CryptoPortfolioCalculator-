@@ -1,6 +1,10 @@
 pipeline {
-    agent any
-
+   agent {
+        dockerfile {
+            filename 'Dockerfile'
+            args '--user root -v /var/run/docker.sock:/var/run/docker.sock --entrypoint=""'
+        }
+    }
     stages {
         stage('Check User') {
             steps {
