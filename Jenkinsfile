@@ -1,7 +1,7 @@
 pipeline {
-   agent {
-        dockerfile {
-            filename 'Dockerfile'
+    agent {
+        docker {
+            image 'dotnet-build-agent:8.0'
             args '--user root -v /var/run/docker.sock:/var/run/docker.sock --entrypoint=""'
         }
     }
