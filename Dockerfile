@@ -28,4 +28,4 @@ ENV ASPNETCORE_URLS=http://+:80
 COPY --from=build /app/publish .
 
 # Run the app
-ENTRYPOINT ["dotnet", "CryptoPortfolio.dll"]
+ENTRYPOINT ["dotnet", "CryptoPorfolio.dll"]
