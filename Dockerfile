@@ -4,7 +4,7 @@ WORKDIR /src
 
 # Copy csproj and restore dependencies
 COPY *.sln .
-COPY CryptoPorfolio/*.csproj ./CryptoPorfolio/
+COPY CryptoPortfolio/*.csproj ./CryptoPortfolio/
 COPY CryptoPortfolio.Common/*.csproj ./CryptoPortfolio.Common/
 COPY CryptoPortfolio.Infrastructure/*.csproj ./CryptoPortfolio.Infrastructure/
 COPY CryptoPortfolio.Tests/*.csproj ./CryptoPortfolio.Tests/
@@ -12,7 +12,7 @@ RUN dotnet restore
 
 # Copy the rest of the code and build
 COPY . .
-WORKDIR /src/CryptoPorfolio
+WORKDIR /src/CryptoPortfolio
 RUN dotnet publish -c Release -o /app/publish
 
 # -----------------------
@@ -28,4 +28,4 @@ ENV ASPNETCORE_URLS=http://+:80
 COPY --from=build /app/publish .
 
 # Run the app
-ENTRYPOINT ["dotnet", "CryptoPorfolio.dll"]
+ENTRYPOINT ["dotnet", "CryptoPortfolio.dll"]
