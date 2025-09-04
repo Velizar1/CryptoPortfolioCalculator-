@@ -3,7 +3,12 @@ pipeline {
         docker {
             image 'dotnet-docker-agent:8.0'
             args '-v /var/run/docker.sock:/var/run/docker.sock'
+            reuseNode true
         }
+    }
+    options {
+        // run container as root instead of jenkins
+        dockerArgs '--user root'
     }
 
     stages {
