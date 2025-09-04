@@ -1,9 +1,8 @@
 pipeline {
-    agent {
-        docker {
-            image 'dotnet-docker-agent:8.0'
+   agent {
+        dockerfile {
+            filename 'Dockerfile'
             args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
-            reuseNode true
         }
     }
     stages {
