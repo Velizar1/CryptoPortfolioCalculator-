@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Globalization;
 
-namespace CryptoPorfolio.Services
+namespace CryptoPortfolio.Services
 {
     public sealed class CoinLoreClient : ICoinLoreClient
     {

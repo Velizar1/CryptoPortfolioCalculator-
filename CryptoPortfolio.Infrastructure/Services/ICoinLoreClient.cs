@@ -1,6 +1,6 @@
 ﻿using CryptoPortfolio.Common.Models;
 
-namespace CryptoPorfolio.Services
+namespace CryptoPortfolio.Services
 {
     public interface ICoinLoreClient
     {

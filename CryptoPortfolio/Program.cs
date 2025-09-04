@@ -1,8 +1,8 @@
 
-using CryptoPorfolio.Filters;
-using CryptoPorfolio.Filters.Options;
-using CryptoPorfolio.Services;
-using CryptoPorfolio.Services.Contracts;
+using CryptoPortfolio.Filters;
+using CryptoPortfolio.Filters.Options;
+using CryptoPortfolio.Services;
+using CryptoPortfolio.Services.Contracts;
 using CryptoPortfolio.Infrastructure.Models;
 using CryptoPortfolio.Infrastructure.Services;
 using Microsoft.Extensions.Options;
@@ -11,7 +11,7 @@ using Serilog;
 using Serilog.Events;
 using System.Reflection;
 
-namespace CryptoPorfolio
+namespace CryptoPortfolio
 {
     public class Program
     {

@@ -1,4 +1,4 @@
-﻿namespace CryptoPorfolio.Filters.Options
+﻿namespace CryptoPortfolio.Filters.Options
 {
     public record EndpoinHitOptions
     {

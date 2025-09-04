@@ -1,4 +1,4 @@
-﻿using CryptoPorfolio.Services.Contracts;
+﻿using CryptoPortfolio.Services.Contracts;
 using CryptoPortfolio.Common.Constants;
 using CryptoPortfolio.Common.Enums;
 using CryptoPortfolio.Common.Helpers;
@@ -6,7 +6,7 @@ using CryptoPortfolio.Common.Models;
 using Microsoft.Extensions.Caching.Memory;
 using System.Text.RegularExpressions;
 
-namespace CryptoPorfolio.Services
+namespace CryptoPortfolio.Services
 {
     public sealed class PortfolioManagerService : IPortfolioManagerService
     {

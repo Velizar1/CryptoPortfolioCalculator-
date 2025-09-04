@@ -1,4 +1,4 @@
-﻿using CryptoPorfolio.Filters.Options;
+﻿using CryptoPortfolio.Filters.Options;
 using CryptoPortfolio.Common.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 
-namespace CryptoPorfolio.Filters
+namespace CryptoPortfolio.Filters
 {
     public sealed class EndpointHitTimeFilter : IAsyncActionFilter
     {

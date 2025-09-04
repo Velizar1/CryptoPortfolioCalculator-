@@ -1,4 +1,4 @@
-﻿using CryptoPorfolio.Services;
+﻿using CryptoPortfolio.Services;
 using CryptoPortfolio.Common.Constants;
 using CryptoPortfolio.Common.Enums;
 using CryptoPortfolio.Common.Models;

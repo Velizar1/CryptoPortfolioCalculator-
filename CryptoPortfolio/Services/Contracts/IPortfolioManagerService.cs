@@ -1,6 +1,6 @@
 ﻿using CryptoPortfolio.Common.Models;
 
-namespace CryptoPorfolio.Services.Contracts
+namespace CryptoPortfolio.Services.Contracts
 {
     public interface IPortfolioManagerService
     {

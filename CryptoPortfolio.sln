@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoPortfolio.Common", "C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoPortfolio.Infrastructure", "CryptoPortfolio.Infrastructure\CryptoPortfolio.Infrastructure.csproj", "{EDFDDD0A-EC17-486B-9EE2-461A0CD77FD6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoPorfolio", "CryptoPortfolio\CryptoPorfolio.csproj", "{666E2869-AD89-4965-93F8-2653FA71D78B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoPortfolio", "CryptoPortfolio\CryptoPortfolio.csproj", "{666E2869-AD89-4965-93F8-2653FA71D78B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoPortfolio.Tests", "CryptoPortfolio.Tests\CryptoPortfolio.Tests.csproj", "{B59DF309-AFAF-4A69-AE4C-CA24E8860133}"
 EndProject

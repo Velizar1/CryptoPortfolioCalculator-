@@ -1,9 +1,9 @@
-﻿using CryptoPorfolio.Filters;
-using CryptoPorfolio.Services.Contracts;
+﻿using CryptoPortfolio.Filters;
+using CryptoPortfolio.Services.Contracts;
 using CryptoPortfolio.Common.Constants;
 using CryptoPortfolio.Common.Models;
 using Microsoft.AspNetCore.Mvc;
-namespace CryptoPorfolio.Controllers
+namespace CryptoPortfolio.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
