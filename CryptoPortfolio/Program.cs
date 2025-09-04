@@ -69,8 +69,6 @@ namespace CryptoPorfolio
                 options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
             });
             builder.Services.AddControllers();
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
             builder.Services.AddSwaggerGen(opts =>
             {
                 opts.CustomOperationIds(api =>
@@ -94,7 +92,6 @@ namespace CryptoPorfolio
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Crypto API v1");
                     c.RoutePrefix = "swagger";
                 });
-                app.MapOpenApi();
             }
 
             app.UseRouting();
