@@ -1,18 +1,15 @@
 pipeline {
-   agent {
-        dockerfile {
-            filename 'Dockerfile'
-            args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
-        }
-    }
+    agent any
+
     stages {
         stage('Check User') {
-                steps {
-                    sh 'whoami'
-                    sh 'id'
-                    sh 'docker ps'
-                }
+            steps {
+                sh 'whoami'
+                sh 'id'
+                sh 'docker ps'
+            }
         }
+
         stage('Checkout') {
             steps {
                 git branch: 'main',
