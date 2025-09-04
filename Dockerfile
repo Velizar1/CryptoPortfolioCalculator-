@@ -15,8 +15,17 @@ COPY . .
 WORKDIR /src/CryptoPortfolio
 RUN dotnet publish -c Release -o /app/publish
 
-# Use smaller runtime image for running
+# -----------------------
+# Runtime image
+# -----------------------
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
+
+# Make sure ASP.NET binds to port 80
+ENV ASPNETCORE_URLS=http://+:80
+
+# Copy published output from build stage
 COPY --from=build /app/publish .
+
+# Run the app
 ENTRYPOINT ["dotnet", "CryptoPortfolio.dll"]
