@@ -8,14 +8,12 @@ pipeline {
     }
     stages {
         stage('Check User') {
-            steps {
-                sh 'whoami'
-                sh 'id'
-                sh 'docker ps'
-            }
+                steps {
+                    sh 'whoami'
+                    sh 'id'
+                    sh 'docker ps'
+                }
         }
-    }
-    stages {
         stage('Checkout') {
             steps {
                 git branch: 'main',
