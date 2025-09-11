@@ -90,7 +90,7 @@ pipeline {
                         aws --version
                         aws s3 ls
                         aws s3 sync out/ s3://$AWS_S3_BUCKET/
-                        aws s3 cp index.html s3://$AWS_S3_BUCKET/index.html --acl public-read
+                        aws s3 cp index.html s3://$AWS_S3_BUCKET/index.html
                     '''
                  }
             }
