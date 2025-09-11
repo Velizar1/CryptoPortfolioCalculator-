@@ -32,24 +32,7 @@ pipeline {
                 sh 'dotnet build --configuration Release'
             }
         }
-        stage('AWS') {
-        
-            agent{
-                docker{
-                    image 'amazon/aws-cli'
-                    args "--entrypoint=''"
-                   
-                }
-            }
-            steps{
-                 withCredentials([usernamePassword(credentialsId: 'my-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
-                    sh '''
-                        aws --version
-                        aws s3 ls
-                    '''
-                 }
-            }
-        }
+      
         stage('Test') {
             steps {
                 sh 'dotnet test --no-build --configuration Release'
@@ -72,5 +55,46 @@ pipeline {
                 }
             }
         }
+        stage('Prepare Index') {
+            steps {
+                sh '''
+                    cat > index.html <<EOF
+                    <!DOCTYPE html>
+                    <html>
+                      <head>
+                        <meta http-equiv="refresh" content="0; url=/swagger/index.html" />
+                      </head>
+                      <body>
+                        <p>Redirecting to <a href="/swagger/index.html">Swagger UI</a>…</p>
+                      </body>
+                    </html>
+                    EOF
+                '''
+            }
+        }
+        stage('AWS') {
+            agent{
+                docker{
+                    image 'amazon/aws-cli'
+                    args "--entrypoint=''"
+                    reuseNode true
+                   
+                }
+            }
+            environment{
+                AWS_S3_BUCKET = 'crypto-test-11092025'
+            }
+            steps{
+                 withCredentials([usernamePassword(credentialsId: 'my-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+                    sh '''
+                        aws --version
+                        aws s3 ls
+                        aws s3 sync out/ s3://$AWS_S3_BUCKET/
+                        aws s3 cp index.html s3://$AWS_S3_BUCKET/index.html --acl public-read
+                    '''
+                 }
+            }
+        }
+
     }
 }
