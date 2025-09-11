@@ -32,7 +32,21 @@ pipeline {
                 sh 'dotnet build --configuration Release'
             }
         }
-
+        stage('AWS') {
+        
+            agent{
+                docker{
+                    image 'amazon/aws-cli'
+                    args "--entrypoint=''"
+                   
+                }
+            }
+            steps{
+                 sh '''
+                        aws --version
+                    '''
+            }
+        }
         stage('Test') {
             steps {
                 sh 'dotnet test --no-build --configuration Release'
