@@ -1,8 +1,9 @@
 ﻿using CryptoPortfolio.Filters;
 using CryptoPortfolio.Services.Contracts;
 using CryptoPortfolio.Common.Constants;
-using CryptoPortfolio.Common.Models;
 using Microsoft.AspNetCore.Mvc;
+using CryptoPortfolio.Common.Models.Portfolio;
+using CryptoPortfolio.Common.Models.Result;
 namespace CryptoPortfolio.Controllers
 {
     [ApiController]

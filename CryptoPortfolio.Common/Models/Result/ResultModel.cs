@@ -1,7 +1,7 @@
 ﻿using CryptoPortfolio.Common.Enums;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CryptoPortfolio.Common.Models
+namespace CryptoPortfolio.Common.Models.Result
 {
     public class ResultModel
     {
@@ -22,7 +22,7 @@ namespace CryptoPortfolio.Common.Models
         private ResultModel(bool succeeded, TData? data, string? errorMessage = null)
            : base(errorMessage, succeeded)
         {
-            this.Data = data;
+            Data = data;
         }
 
         public static ResultModel<TData> Failed(ErrorCodes error)

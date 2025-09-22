@@ -1,4 +1,5 @@
-﻿using CryptoPortfolio.Common.Models;
+﻿using CryptoPortfolio.Common.Models.Portfolio;
+using CryptoPortfolio.Common.Models.Result;
 
 namespace CryptoPortfolio.Services.Contracts
 {

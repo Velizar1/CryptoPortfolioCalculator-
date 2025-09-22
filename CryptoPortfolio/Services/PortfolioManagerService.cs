@@ -2,9 +2,11 @@
 using CryptoPortfolio.Common.Constants;
 using CryptoPortfolio.Common.Enums;
 using CryptoPortfolio.Common.Helpers;
-using CryptoPortfolio.Common.Models;
 using Microsoft.Extensions.Caching.Memory;
 using System.Text.RegularExpressions;
+using CryptoPortfolio.Common.Models.Cache;
+using CryptoPortfolio.Common.Models.Portfolio;
+using CryptoPortfolio.Common.Models.Result;
 
 namespace CryptoPortfolio.Services
 {
@@ -95,10 +97,8 @@ namespace CryptoPortfolio.Services
 
                 var values = line.Split("|");
 
-                decimal coinPortCount;
-                decimal coinPortValue;
-                if (decimal.TryParse(values[0], out coinPortCount) == false ||
-                    decimal.TryParse(values[2], out coinPortValue) == false)
+                if (decimal.TryParse(values[0], out decimal coinPortCount) == false ||
+                    decimal.TryParse(values[2], out decimal coinPortValue) == false)
                     return ResultModel<List<PortfolioCoinModel>?>.Failed(ErrorCodes.LineNotInTheCorrectFormat);
 
                 var coinCode = values[1];

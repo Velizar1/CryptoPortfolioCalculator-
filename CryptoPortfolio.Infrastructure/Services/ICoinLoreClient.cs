@@ -1,4 +1,4 @@
-﻿using CryptoPortfolio.Common.Models;
+﻿using CryptoPortfolio.Common.Models.Cache;
 
 namespace CryptoPortfolio.Services
 {

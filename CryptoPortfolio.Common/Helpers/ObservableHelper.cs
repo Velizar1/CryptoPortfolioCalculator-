@@ -1,4 +1,4 @@
-﻿using CryptoPortfolio.Common.Models;
+﻿using CryptoPortfolio.Common.Models.Result;
 using Microsoft.Extensions.Logging;
 
 namespace CryptoPortfolio.Common.Helpers

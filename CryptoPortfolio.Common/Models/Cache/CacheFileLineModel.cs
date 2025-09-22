@@ -1,4 +1,4 @@
-﻿namespace CryptoPortfolio.Common.Models
+﻿namespace CryptoPortfolio.Common.Models.Cache
 {
     public record struct CacheFileLineModel
     {

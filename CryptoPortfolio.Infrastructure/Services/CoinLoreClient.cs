@@ -1,5 +1,5 @@
 ﻿using CryptoPortfolio.Common.Constants;
-using CryptoPortfolio.Common.Models;
+using CryptoPortfolio.Common.Models.Cache;
 using CryptoPortfolio.Infrastructure.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -19,7 +19,7 @@ namespace CryptoPortfolio.Services
         public async Task<int> GetGlobalCriptoCoinsCount(CancellationToken token)
         {
             using var response = await _client.GetAsync(ExternalCryptocurrencyAPIConstants.Global, token);
-            response.EnsureSuccessStatusCode();
+            _ = response.EnsureSuccessStatusCode();
 
             var resultStr = await response.Content.ReadAsStringAsync();
             var data = JsonConvert.DeserializeObject<List<CoinLoreGlobalData>>(resultStr)!;
@@ -30,10 +30,10 @@ namespace CryptoPortfolio.Services
             return isEmptyResult ? 0 : data!.First().CoinsCount;
         }
 
-        public async Task<Dictionary<string, CacheCoinAPIModel>?> GetTickersPrices(int skip, int take, CancellationToken cancelationToken)
+        public Task<Dictionary<string, CacheCoinAPIModel>?> GetTickersPrices(int skip, int take, CancellationToken cancelationToken)
         {
             var uri = String.Format(ExternalCryptocurrencyAPIConstants.TickersBySize, skip, take);
-            return await GetResponse(uri, cancelationToken);
+            return GetResponse(uri, cancelationToken);
         }
 
         public async Task<Dictionary<string, CacheCoinAPIModel>?> GetTickersPricesByIds(List<string> ids, CancellationToken cancelationToken)
@@ -46,10 +46,9 @@ namespace CryptoPortfolio.Services
         private async Task<Dictionary<string, CacheCoinAPIModel>?> GetResponse(string uri, CancellationToken cancelationToken)
         {
             using var response = await _client.GetAsync(uri, cancelationToken);
-            response.EnsureSuccessStatusCode();
+            _ = response.EnsureSuccessStatusCode();
 
             var resultStr = await response.Content.ReadAsStringAsync();
-            var coins = new List<CoinLoreTicker>();
 
             var token = JToken.Parse(resultStr);
 
