@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CriptoPortfolio.Application\CriptoPortfolio.Application.csproj" />
     <ProjectReference Include="..\CryptoPortfolio.Common\CryptoPortfolio.Common.csproj" />
   </ItemGroup>
 

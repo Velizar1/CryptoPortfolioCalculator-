@@ -1,6 +1,8 @@
-﻿namespace CryptoPortfolio.Common.Models.Portfolio
+﻿using CryptoPortfolio.Domain.Coin;
+
+namespace CryptoPortfolio.Domain.Portfolio
 {
-    public record class PortfolioCoinModel
+    public class PortfolioCryptoModel
     {
         public decimal CoinCount { get; init; }
 
@@ -10,7 +12,7 @@
 
         public decimal CurrentValue { get; init; }
 
-        public required string CoinCode { get; init; }
+        public required CoinModel Coin { get; init; }
 
         public decimal PercentageChange { get; init; }
     }

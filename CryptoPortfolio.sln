@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoPortfolio.Common", "CryptoPortfolio.Common\CryptoPortfolio.Common.csproj", "{9C6ECB03-9E8E-4E40-95FF-0C2E5503F17E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoPortfolio.Infrastructure", "CryptoPortfolio.Infrastructure\CryptoPortfolio.Infrastructure.csproj", "{EDFDDD0A-EC17-486B-9EE2-461A0CD77FD6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoPortfolio", "CryptoPortfolio\CryptoPortfolio.csproj", "{666E2869-AD89-4965-93F8-2653FA71D78B}"
@@ -18,16 +16,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Jenkinsfile = Jenkinsfile
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoPortfolio.Domain", "CryptoPortfolio.Domain\CryptoPortfolio.Domain.csproj", "{08D5ABEC-AF08-4C99-B114-7755643FA6A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CriptoPortfolio.Application", "CriptoPortfolio.Application\CriptoPortfolio.Application.csproj", "{5AAD4774-0554-44FA-A701-00D5EC90D045}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9C6ECB03-9E8E-4E40-95FF-0C2E5503F17E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9C6ECB03-9E8E-4E40-95FF-0C2E5503F17E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9C6ECB03-9E8E-4E40-95FF-0C2E5503F17E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9C6ECB03-9E8E-4E40-95FF-0C2E5503F17E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EDFDDD0A-EC17-486B-9EE2-461A0CD77FD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EDFDDD0A-EC17-486B-9EE2-461A0CD77FD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDFDDD0A-EC17-486B-9EE2-461A0CD77FD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -40,6 +38,14 @@ Global
 		{B59DF309-AFAF-4A69-AE4C-CA24E8860133}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B59DF309-AFAF-4A69-AE4C-CA24E8860133}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B59DF309-AFAF-4A69-AE4C-CA24E8860133}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08D5ABEC-AF08-4C99-B114-7755643FA6A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08D5ABEC-AF08-4C99-B114-7755643FA6A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08D5ABEC-AF08-4C99-B114-7755643FA6A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08D5ABEC-AF08-4C99-B114-7755643FA6A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AAD4774-0554-44FA-A701-00D5EC90D045}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AAD4774-0554-44FA-A701-00D5EC90D045}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AAD4774-0554-44FA-A701-00D5EC90D045}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AAD4774-0554-44FA-A701-00D5EC90D045}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

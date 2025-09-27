@@ -1,12 +1,16 @@
-﻿using CryptoPortfolio.Services;
+﻿using CriptoPortfolio.Application.Coin;
+using CriptoPortfolio.Application.Services;
+using CryptoPortfolio.Application;
+using CryptoPortfolio.Application.Services;
 using CryptoPortfolio.Common.Constants;
 using CryptoPortfolio.Common.Enums;
+using CryptoPortfolio.Common.Models.Cache;
+using CryptoPortfolio.Domain.Coin;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System.Text;
-using CryptoPortfolio.Common.Models.Cache;
 
 namespace CryptoPortfolio.Tests.Unit
 {
@@ -19,6 +23,7 @@ namespace CryptoPortfolio.Tests.Unit
         private Mock<IMemoryCache> _memoryCacheMock = null!;
         private ILogger<PortfolioManagerService> _logger = null!;
 
+
         [OneTimeSetUp]
         public void SetUp()
         {
@@ -26,13 +31,13 @@ namespace CryptoPortfolio.Tests.Unit
             _memoryCacheMock = new Mock<IMemoryCache>(MockBehavior.Strict);
             _cache = new MemoryCache(new MemoryCacheOptions());
             _logger = new Mock<ILogger<PortfolioManagerService>>().Object;
-            _svc = new PortfolioManagerService(_cache, _logger, _clientMock.Object);
+            _svc = new PortfolioManagerService(_cache, _logger, new ObservableService(), _clientMock.Object);
         }
 
         [OneTimeTearDown]
         public void TearDow()
         {
-            if(_cache != null)
+            if (_cache != null)
                 _cache.Dispose();
         }
 
@@ -40,13 +45,13 @@ namespace CryptoPortfolio.Tests.Unit
         public async Task ComputeCurrentPortfolio_NoCache_ReturnsMissingMemoryCache()
         {
             var file = MakeFormFile("1|BTC|100");
-            object? boxed = new Dictionary<string, CacheCoinAPIModel?>();
+            object? boxed = new List<CoinValueInfo?>();
 
             _memoryCacheMock
                 .Setup(m => m.TryGetValue(CacheConstants.CoinsKey, out boxed))
                 .Returns(true);
 
-            var service = new PortfolioManagerService(_memoryCacheMock.Object, _logger, _clientMock.Object);
+            var service = new PortfolioManagerService(_memoryCacheMock.Object, _logger, new ObservableService(), _clientMock.Object);
 
             var result = await service.ComputeCurrentPortfolio("session1", file, CancellationToken.None);
 
@@ -58,7 +63,7 @@ namespace CryptoPortfolio.Tests.Unit
         public async Task ComputeCurrentPortfolio_BadLineFormat_ReturnsLineNotInTheCorrectFormat()
         {
             _cache.Set(CacheConstants.CoinsKey,
-                new Dictionary<string, CacheCoinAPIModel?> { { "BTC", new CacheCoinAPIModel { Id = "1", Price = 5m } } });
+              new List<CoinValueInfo> { { new CoinValueInfo { Coin = new CoinModel { Id = 1, Code = "BTC" }, Price = 5m } } });
 
             var file = MakeFormFile("not|valid|line");
             var result = await _svc.ComputeCurrentPortfolio("session2", file, CancellationToken.None);
@@ -71,7 +76,7 @@ namespace CryptoPortfolio.Tests.Unit
         public async Task ComputeCurrentPortfolio_MissingCoinInCache_ReturnsMissingCoinInMemoryCache()
         {
             _cache.Set(CacheConstants.CoinsKey,
-                new Dictionary<string, CacheCoinAPIModel?>());
+               new List<CoinValueInfo> ());
 
             var file = MakeFormFile("2|ETH|200");
             var result = await _svc.ComputeCurrentPortfolio("session3", file, CancellationToken.None);
@@ -86,33 +91,33 @@ namespace CryptoPortfolio.Tests.Unit
             var coinBoughtValue = 50m;
             var coinCount = 3;
             var coinValue = 100m;
-            var apiCache = new Dictionary<string, CacheCoinAPIModel?> {
-                { "BTC", new CacheCoinAPIModel { Id = "42", Price = coinValue } }
+            var apiCache = new List<CoinValueInfo> {
+                {new CoinValueInfo { Coin = new CoinModel { Id = 42 , Code = "BTC" }, Price = coinValue } }
             };
             _cache.Set(CacheConstants.CoinsKey, apiCache);
 
             var file = MakeFormFile("3|BTC|50");
             var result = await _svc.ComputeCurrentPortfolio("session4", file, CancellationToken.None);
 
-            
+
             Assert.That(result.Success, Is.True);
             Assert.That(result.Data, Is.Not.Null);
-            
+
             var coin = result.Data![0];
-            
-            Assert.That("BTC", Is.EqualTo(coin.CoinCode));
+
+            Assert.That("BTC", Is.EqualTo(coin.Coin.Code));
             Assert.That(coinValue, Is.EqualTo(coin.CurrentCoinValue));
             Assert.That(coinCount * coinValue, Is.EqualTo(coin.CurrentValue));
             Assert.That((coinValue - coinBoughtValue) / coinBoughtValue * 100, Is.EqualTo(coin.PercentageChange));
 
-            Assert.That(_cache.TryGetValue<Dictionary<string, CacheFileLineModel?>>(
+            Assert.That(_cache.TryGetValue<List<CoinPortfolioModel?>>(
                 "session4", out var fileInfo), Is.True);
             Assert.That(fileInfo, Is.Not.Null);
 
-            var entry = fileInfo!["42"]!;
-            
-            Assert.That(coinCount, Is.EqualTo(entry.Value.CoinCount));
-            Assert.That(coinBoughtValue, Is.EqualTo(entry.Value.Price));
+            var entry = fileInfo.FirstOrDefault();
+
+            Assert.That(coinCount, Is.EqualTo(entry.Count));
+            Assert.That(coinBoughtValue, Is.EqualTo(entry.Price));
         }
 
         [Test]
@@ -128,16 +133,16 @@ namespace CryptoPortfolio.Tests.Unit
         public async Task UpdatePortfolio_ClientReturnsNull_ReturnsNoCoinDataFound()
         {
             // arrange
-            var fileInfo = new Dictionary<string, CacheFileLineModel?> {
-                { "BTC", new CacheFileLineModel { Price = 10m, CoinCount = 2m } }
+            var fileInfo = new List<CoinPortfolioModel?> {
+                { new CoinPortfolioModel { Coin = new CoinModel { Code = "BTC", Id = 1 }, Price = 10m, Count = 2m }}
             };
             _cache.Set("sess1", fileInfo);
 
             _clientMock
                 .Setup(c => c.GetTickersPricesByIds(
-                    It.IsAny<List<string>>(),
+                    It.IsAny<List<int>>(),
                     It.IsAny<CancellationToken>()))
-                .ReturnsAsync((Dictionary<string, CacheCoinAPIModel>?)null);
+                .ReturnsAsync((Dictionary<string, CoinValueInfo>?)null);
 
             var result = await _svc.UpdatePortfolio("sess1", CancellationToken.None);
 
@@ -148,17 +153,17 @@ namespace CryptoPortfolio.Tests.Unit
         [Test]
         public async Task UpdatePortfolio_MissingCacheEntryForCoin_ReturnsNoCoinDataFound()
         {
-            var fileInfo = new Dictionary<string, CacheFileLineModel?> {
-                { "USD", new CacheFileLineModel { Price = 1m, CoinCount = 100m } }
+            var fileInfo = new List<CoinPortfolioModel?>  {
+               { new CoinPortfolioModel { Coin = new CoinModel { Code = "USP", Id = 2 }, Price = 1m, Count = 100m }}
             };
             _cache.Set("sess2", fileInfo);
 
-            var prices = new Dictionary<string, CacheCoinAPIModel> {
-                { "BTC", new CacheCoinAPIModel { Id = "99", Price = 5m } }
+            var prices = new Dictionary<string, CoinValueInfo> {
+                { "BTC", new CoinValueInfo { Coin = new CoinModel{ Id = 99, Code = "BTC"}, Price = 5m } }
             };
             _clientMock
                 .Setup(c => c.GetTickersPricesByIds(
-                    It.IsAny<List<string>>(),
+                    It.IsAny<List<int>>(),
                     It.IsAny<CancellationToken>()))
                 .ReturnsAsync(prices);
 
@@ -174,18 +179,19 @@ namespace CryptoPortfolio.Tests.Unit
             var coinCount = 3m;
             var coinValue = 20m;
             var coinBoughtValue = 10m;
-            var fileInfo = new Dictionary<string, CacheFileLineModel?> {
-                { "BTC", new CacheFileLineModel { Price = coinBoughtValue, CoinCount = coinCount } }
+            var fileInfo = new List<CoinPortfolioModel?>  {
+               { new CoinPortfolioModel { Coin = new CoinModel { Code = "BTC", Id = 1 }, Price = coinBoughtValue, Count = coinCount }}
             };
+
             _cache.Set("sess3", fileInfo);
 
-            var prices = new Dictionary<string, CacheCoinAPIModel> {
-                { "BTC", new CacheCoinAPIModel { Id = "BTC", Price = coinValue } }
+            var prices = new Dictionary<string, CoinValueInfo> {
+                { "BTC", new CoinValueInfo { Coin = new CoinModel{ Code = "BTC", Id = 1 }, Price = coinValue } }
             };
 
             _clientMock
                 .Setup(c => c.GetTickersPricesByIds(
-                    It.IsAny<List<string>>(),
+                    It.IsAny<List<int>>(),
                     It.IsAny<CancellationToken>()))
                 .ReturnsAsync(prices);
 
@@ -195,7 +201,7 @@ namespace CryptoPortfolio.Tests.Unit
             Assert.That(result.Success, Is.True);
             Assert.That(result.Data, Is.Not.Null);
             var coin = result.Data![0];
-            Assert.That("BTC", Is.EqualTo(coin.CoinCode));
+            Assert.That("BTC", Is.EqualTo(coin.Coin.Code));
             Assert.That(coinCount, Is.EqualTo(coin.CoinCount));
             Assert.That(coinValue, Is.EqualTo(coin.CurrentCoinValue));
             Assert.That(coinCount * coinValue, Is.EqualTo(coin.CurrentValue));

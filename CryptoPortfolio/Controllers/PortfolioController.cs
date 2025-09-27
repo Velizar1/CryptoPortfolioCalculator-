@@ -1,9 +1,10 @@
 ﻿using CryptoPortfolio.Filters;
-using CryptoPortfolio.Services.Contracts;
 using CryptoPortfolio.Common.Constants;
 using Microsoft.AspNetCore.Mvc;
 using CryptoPortfolio.Common.Models.Portfolio;
 using CryptoPortfolio.Common.Models.Result;
+using CryptoPortfolio.Application.Services.Contracts;
+using CryptoPortfolio.Domain.Portfolio;
 namespace CryptoPortfolio.Controllers
 {
     [ApiController]
@@ -17,9 +18,9 @@ namespace CryptoPortfolio.Controllers
         }
 
         [HttpPut]
-        [ProducesResponseType(typeof(ResultModel<List<PortfolioCoinModel>?>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ResultModel<List<PortfolioCoinModel>?>), StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<List<PortfolioCoinModel>?>> UploadCryptoPortfolio(IFormFile file, CancellationToken cancellationToken)
+        [ProducesResponseType(typeof(ResultModel<List<PortfolioCryptoModel>?>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultModel<List<PortfolioCryptoModel>?>), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<List<PortfolioCryptoModel>?>> UploadCryptoPortfolio(IFormFile file, CancellationToken cancellationToken)
         {
             if (file.Length > FileConstants.MaxFileUploadSizeInBytes)
                 return BadRequest("File too large.");
@@ -35,9 +36,9 @@ namespace CryptoPortfolio.Controllers
 
         [HttpGet]
         [ServiceFilter(typeof(EndpointHitTimeFilter))] // 55-sec hit interval allowed
-        [ProducesResponseType(typeof(ResultModel<List<PortfolioCoinModel>?>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ResultModel<List<PortfolioCoinModel>?>), StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<List<PortfolioCoinModel>?>> RefreshInformation(CancellationToken cancellationToken)
+        [ProducesResponseType(typeof(ResultModel<List<PortfolioCryptoModel>?>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResultModel<List<PortfolioCryptoModel>?>), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<List<PortfolioCryptoModel>?>> RefreshInformation(CancellationToken cancellationToken)
         {
             string sessionId = HttpContext.Session.Id;
             var result = await _portfolioManager.UpdatePortfolio(sessionId, cancellationToken);

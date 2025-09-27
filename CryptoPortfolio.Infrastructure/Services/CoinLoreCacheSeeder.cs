@@ -4,7 +4,8 @@ using CryptoPortfolio.Common.Helpers;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using CryptoPortfolio.Common.Models.Cache;
+using CryptoPortfolio.Domain.Coin;
+using CryptoPortfolio.Application;
 
 namespace CryptoPortfolio.Infrastructure.Services
 {
@@ -41,14 +42,14 @@ namespace CryptoPortfolio.Infrastructure.Services
             if (totalCoinsCount == 0)
                 return;
 
-            List<Task<Dictionary<string, CacheCoinAPIModel>?>> tasks = new();
+            List<Task<Dictionary<string, CoinValueInfo>?>> tasks = new();
             var totalPages = totalCoinsCount / coinsPerBatch;
 
             for (var i = 0; i < totalPages; i++)
             {
                 tasks.Add(_client.GetTickersPrices(i * coinsPerBatch, coinsPerBatch, cancellationToken));
             }
-            
+
             var lastPageCount = totalCoinsCount % coinsPerBatch;
             if (lastPageCount > 0)
                 tasks.Add(_client.GetTickersPrices(totalCoinsCount - lastPageCount, lastPageCount, cancellationToken));
@@ -57,14 +58,7 @@ namespace CryptoPortfolio.Infrastructure.Services
                                      .Where(d => d != null)
                                      .SelectMany(d => d!);
 
-            var coins = new Dictionary<string, CacheCoinAPIModel?>();
-            foreach (var coin in results)
-            {
-                if (coins.ContainsKey(coin.Key))
-                    continue;
-
-                coins[coin.Key] = coin.Value;
-            }
+            var coins = results.Select(x => x.Value).ToList();
 
             _cache.Set(CacheConstants.CoinsKey, coins);
         }

@@ -1,5 +1,6 @@
-﻿using CryptoPortfolio.Common.Constants;
-using CryptoPortfolio.Common.Models.Cache;
+﻿using CryptoPortfolio.Application;
+using CryptoPortfolio.Common.Constants;
+using CryptoPortfolio.Domain.Coin;
 using CryptoPortfolio.Infrastructure.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -30,20 +31,20 @@ namespace CryptoPortfolio.Services
             return isEmptyResult ? 0 : data!.First().CoinsCount;
         }
 
-        public Task<Dictionary<string, CacheCoinAPIModel>?> GetTickersPrices(int skip, int take, CancellationToken cancelationToken)
+        public Task<Dictionary<string, CoinValueInfo>?> GetTickersPricesByIds(List<int> ids, CancellationToken cancelationToken)
+        {
+            var strIds = string.Join(",", ids);
+            var uri = String.Format(ExternalCryptocurrencyAPIConstants.TickersByIds, strIds);
+            return GetResponse(uri, cancelationToken);
+        }
+
+        public Task<Dictionary<string, CoinValueInfo>?> GetTickersPrices(int skip, int take, CancellationToken cancelationToken)
         {
             var uri = String.Format(ExternalCryptocurrencyAPIConstants.TickersBySize, skip, take);
             return GetResponse(uri, cancelationToken);
         }
 
-        public async Task<Dictionary<string, CacheCoinAPIModel>?> GetTickersPricesByIds(List<string> ids, CancellationToken cancelationToken)
-        {
-            var strIds = string.Join(",", ids);
-            var uri = String.Format(ExternalCryptocurrencyAPIConstants.TickersByIds, strIds);
-            return await GetResponse(uri, cancelationToken);
-        }
-
-        private async Task<Dictionary<string, CacheCoinAPIModel>?> GetResponse(string uri, CancellationToken cancelationToken)
+        private async Task<Dictionary<string, CoinValueInfo>?> GetResponse(string uri, CancellationToken cancelationToken)
         {
             using var response = await _client.GetAsync(uri, cancelationToken);
             _ = response.EnsureSuccessStatusCode();
@@ -73,9 +74,10 @@ namespace CryptoPortfolio.Services
                                             CultureInfo.InvariantCulture,
                                             out var price);
 
-                         return new CacheCoinAPIModel
+                         Int32.TryParse(first.Id, out var id);
+                         return new CoinValueInfo
                          {
-                             Id = first.Id,
+                             Coin = new CoinModel{ Id = id, Code = first.Symbol},
                              Price = price
                          };
                      });

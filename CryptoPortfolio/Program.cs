@@ -2,14 +2,17 @@
 using CryptoPortfolio.Filters;
 using CryptoPortfolio.Filters.Options;
 using CryptoPortfolio.Services;
-using CryptoPortfolio.Services.Contracts;
 using CryptoPortfolio.Infrastructure.Models;
 using CryptoPortfolio.Infrastructure.Services;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
-using System.Reflection;
+using CryptoPortfolio.Application;
+using CryptoPortfolio.Application.Services.Contracts;
+using CryptoPortfolio.Application.Services;
+using CriptoPortfolio.Application.Services;
+using CriptoPortfolio.Application.Contracts;
 
 namespace CryptoPortfolio
 {
@@ -52,6 +55,7 @@ namespace CryptoPortfolio
                 });
 
             builder.Services.AddScoped<IPortfolioManagerService, PortfolioManagerService>();
+            builder.Services.AddTransient<IObservableService, ObservableService>();
             builder.Services.AddScoped<EndpointHitTimeFilter>();
             builder.Services.AddHostedService<CoinLoreCacheSeeder>();
             builder.Services.AddCors(o => o.AddDefaultPolicy(p =>
